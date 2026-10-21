@@ -17,6 +17,12 @@ namespace Mathtone.Sdk.Graphs {
 		}
 
 		public void SetParent(Tree<T>? parent) {
+			for (var ancestor = parent; ancestor != null; ancestor = ancestor.Parent) {
+				if (ReferenceEquals(ancestor, this)) {
+					throw new ArgumentException("A node cannot be parented to itself or one of its descendants.", nameof(parent));
+				}
+			}
+
 			if (_parent != null) {
 				_parent._children.Remove(this);
 			}

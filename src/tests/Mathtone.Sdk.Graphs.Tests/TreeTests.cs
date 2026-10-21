@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 namespace Mathtone.Sdk.Graphs.Tests {
@@ -63,6 +64,27 @@ namespace Mathtone.Sdk.Graphs.Tests {
 
 			Assert.Equal(t3, t2.Parent);
 			Assert.Empty(t1);
+		}
+
+		[Fact]
+		public void SetParent_RejectsSelfParenting() {
+			var tree = new Tree<string>("A");
+
+			Assert.Throws<ArgumentException>(() => tree.SetParent(tree));
+			Assert.Null(tree.Parent);
+		}
+
+		[Fact]
+		public void SetParent_RejectsDescendantParentingWithoutChangingTree() {
+			var parent = new Tree<string>("A");
+			var child = new Tree<string>("B") {
+				Parent = parent
+			};
+
+			Assert.Throws<ArgumentException>(() => parent.SetParent(child));
+			Assert.Null(parent.Parent);
+			Assert.Equal(parent, child.Parent);
+			Assert.Single(parent);
 		}
 
 		[Fact]

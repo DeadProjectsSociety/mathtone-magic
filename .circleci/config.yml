@@ -28,8 +28,7 @@ orbs:
 jobs:
   get-code:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:6.0
-      - image: mcr.microsoft.com/dotnet/sdk:8.0
+      - image: mcr.microsoft.com/dotnet/sdk:10.0
     working_directory: /mnt/ramdisk
     steps:
       - checkout
@@ -42,8 +41,7 @@ jobs:
       
   integration-tests:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:6.0
-      - image: mcr.microsoft.com/dotnet/sdk:8.0
+      - image: mcr.microsoft.com/dotnet/sdk:10.0
       - image: postgres
         environment:
           POSTGRES_USER: postgres
@@ -52,6 +50,8 @@ jobs:
         environment:
           MSSQL_SA_PASSWORD: test!1234
           ACCEPT_EULA: Y
+    environment:
+      DOTNET_ROLL_FORWARD: Major
     working_directory: /mnt/ramdisk
     steps:
       - attach_workspace:
@@ -64,8 +64,7 @@ jobs:
 
   disintegration-tests:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:6.0
-      - image: mcr.microsoft.com/dotnet/sdk:8.0
+      - image: mcr.microsoft.com/dotnet/sdk:10.0
       - image: postgres
         environment:
           POSTGRES_USER: postgres
@@ -74,6 +73,8 @@ jobs:
         environment:
           MSSQL_SA_PASSWORD: test!1234
           ACCEPT_EULA: Y
+    environment:
+      DOTNET_ROLL_FORWARD: Major
     working_directory: /mnt/ramdisk
     steps:
       - attach_workspace:
@@ -114,8 +115,7 @@ jobs:
 
   publish-nuget:
     docker:
-      - image: mcr.microsoft.com/dotnet/sdk:6.0
-      - image: mcr.microsoft.com/dotnet/sdk:8.0
+      - image: mcr.microsoft.com/dotnet/sdk:10.0
     steps:
       - attach_workspace:
           at: .
