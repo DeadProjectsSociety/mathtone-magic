@@ -66,6 +66,27 @@ namespace Mathtone.Sdk.Graphs.Tests {
 		}
 
 		[Fact]
+		public void SetParent_RejectsSelfParenting() {
+			var tree = new Tree<string>("A");
+
+			Assert.Throws<ArgumentException>(() => tree.SetParent(tree));
+			Assert.Null(tree.Parent);
+		}
+
+		[Fact]
+		public void SetParent_RejectsDescendantParentingWithoutChangingTree() {
+			var parent = new Tree<string>("A");
+			var child = new Tree<string>("B") {
+				Parent = parent
+			};
+
+			Assert.Throws<ArgumentException>(() => parent.SetParent(child));
+			Assert.Null(parent.Parent);
+			Assert.Equal(parent, child.Parent);
+			Assert.Single(parent);
+		}
+
+		[Fact]
 		public void WithDescendents() {
 			Assert.Equal(10, _tree[0].WithDescendents.Count());
 		}

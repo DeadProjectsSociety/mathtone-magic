@@ -21,7 +21,7 @@ namespace Mathtone.Sdk.NeuralNetworks {
 		/// Gets the output of th elast layer.
 		/// </summary>
 		/// <value>The output.</value>
-		public double[] Output => Layers.Last().Output;
+		public double[] Output => Layers.LastOrDefault()?.Output ?? Array.Empty<double>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="NeuralNetwork"/> class.
